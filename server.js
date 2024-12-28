@@ -3,6 +3,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./src/config/db');
 const swaggerUi = require('swagger-ui-express');
 const swaggerJsdoc = require('swagger-jsdoc');
+const cors = require('cors'); // Importar cors
 
 dotenv.config();
 
@@ -30,6 +31,9 @@ const swaggerOptions = {
 
 // Inicializar Swagger JSDoc
 const swaggerSpec = swaggerJsdoc(swaggerOptions);
+
+// Configurar CORS
+app.use(cors()); // Permitir todos los orígenes
 
 // Ruta de documentación
 app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerSpec));
