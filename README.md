@@ -1,7 +1,7 @@
 
 # Task Manager API Backend
 
-Este es el backend del proyecto *Task Manager*, una API RESTful que permite gestionar tareas, permitiendo crear, leer, actualizar y eliminar tareas. La aplicación está construida utilizando Node.js, Express y MongoDB. La base de datos está alojada en MongoDB Atlas.
+Este es el backend del proyecto *Task Manager*, una API RESTful que permite gestionar tareas, permitiendo crear, leer, actualizar y eliminar tareas. La aplicación está construida utilizando Node.js, Express y MongoDB.
 
 ## Enlace del Proyecto Deployado
 
@@ -30,7 +30,8 @@ http://localhost:5000/api-docs/#/
 ### Requisitos Previos
 
 - Node.js (versión >= 14.0.0)
-- MongoDB Atlas para la base de datos
+- MongoDB instalado localmente para desarrollo
+- MongoDB Atlas para la base de datos en producción
 
 ### Pasos para la instalación
 
@@ -52,11 +53,14 @@ http://localhost:5000/api-docs/#/
     npm install
     ```
 
-4. Crea un archivo `.env` en la raíz del proyecto y agrega tu URI de conexión de MongoDB Atlas:
+4. Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables:
 
     ```plaintext
-    MONGO_URI=<tu_uri_de_mongodb_atlas>
+    PORT=5000
+    MONGO_URI=mongodb://localhost:27017/taskmanager
     ```
+
+    Nota: Asegúrate de tener MongoDB instalado y corriendo localmente para desarrollo. En producción, utiliza una URI de conexión a MongoDB Atlas.
 
 5. Levanta el servidor:
 
@@ -68,11 +72,11 @@ El servidor estará corriendo en `http://localhost:5000` por defecto.
 
 ### Configuración de la Base de Datos
 
-El proyecto usa MongoDB Atlas como base de datos. Para configurarlo, sigue estos pasos:
-
-1. Crea una cuenta en [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
-2. Crea un clúster.
-3. Obtén la URI de conexión del clúster y configúralo en el archivo `.env`.
+- **Desarrollo Local:** Asegúrate de tener MongoDB instalado y ejecutándose localmente.
+- **Producción:** El proyecto utiliza MongoDB Atlas. Para configurarlo, sigue estos pasos:
+  1. Crea una cuenta en [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
+  2. Crea un clúster.
+  3. Obtén la URI de conexión del clúster y configúrala en tu entorno de despliegue.
 
 ## Estructura del Proyecto
 
@@ -90,7 +94,7 @@ task-manager-backend/
 │   │   └── Task.js
 │   ├── routes/
 │   │   └── taskRoutes.js
-│   ├── server.js
+├── server.js
 ├── .env
 ├── package.json
 └── README.md
@@ -120,34 +124,48 @@ Define las rutas para acceder a las tareas a través de la API. Incluye las vali
 
 `POST /api/tasks`
 
-- **Body**: `{ "title": "título de la tarea", "description": "descripción de la tarea", "completed": booleano }`
-- **Respuesta**: `201 Created` (con los datos de la tarea creada)
+- **Body:** `{ "title": "título de la tarea", "description": "descripción de la tarea", "completed": booleano }`
+- **Respuestas:**
+  - `201 Created`: Devuelve los datos de la tarea creada.
+  - `400 Bad Request`: Si el título es obligatorio pero no se proporciona.
+  - `500 Internal Server Error`: Si ocurre un error en el servidor.
 
 ### Obtener todas las tareas
 
 `GET /api/tasks`
 
-- **Query Params**: `completed` (opcional, booleano para filtrar por tareas completadas o pendientes)
-- **Respuesta**: `200 OK` (con la lista de tareas)
+- **Query Params:** `completed` (opcional, booleano para filtrar por tareas completadas o pendientes).
+- **Respuestas:**
+  - `200 OK`: Devuelve la lista de tareas.
+  - `500 Internal Server Error`: Si ocurre un error en el servidor.
 
 ### Obtener una tarea por ID
 
 `GET /api/tasks/{id}`
 
-- **Params**: `{id}` (ID de la tarea)
-- **Respuesta**: `200 OK` (con los datos de la tarea)
-- **Errores**: `404 Not Found` si la tarea no existe.
+- **Params:** `{id}` (ID de la tarea).
+- **Respuestas:**
+  - `200 OK`: Devuelve los datos de la tarea.
+  - `404 Not Found`: Si la tarea no existe.
+  - `500 Internal Server Error`: Si ocurre un error en el servidor.
 
 ### Actualizar una tarea
 
 `PUT /api/tasks/{id}`
 
-- **Params**: `{id}` (ID de la tarea)
-- **Body**: `{ "title": "nuevo título", "description": "nueva descripción", "completed": nuevo valor booleano }`
-- **Respuesta**: `200 OK` (con los datos de la tarea actualizada)
+- **Params:** `{id}` (ID de la tarea).
+- **Body:** `{ "title": "nuevo título", "description": "nueva descripción", "completed": nuevo valor booleano }`.
+- **Respuestas:**
+  - `200 OK`: Devuelve los datos de la tarea actualizada.
+  - `404 Not Found`: Si la tarea no existe.
+  - `500 Internal Server Error`: Si ocurre un error en el servidor.
 
 ### Eliminar una tarea
 
 `DELETE /api/tasks/{id}`
 
-- **Params**: `{id}` (ID de la tarea)
+- **Params:** `{id}` (ID de la tarea).
+- **Respuestas:**
+  - `200 OK`: Confirma que la tarea fue eliminada.
+  - `404 Not Found`: Si la tarea no existe.
+  - `500 Internal Server Error`: Si ocurre un error en el servidor.
