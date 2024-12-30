@@ -38,7 +38,7 @@ http://localhost:5000/api-docs/#/
 1. Clona el repositorio:
 
     ```bash
-    git clone <repositorio_url>
+    git clone https://github.com/DamianEtcheverrigaray97/task-manager-back.git
     ```
 
 2. Navega al directorio del proyecto:
@@ -46,12 +46,13 @@ http://localhost:5000/api-docs/#/
     ```bash
     cd task-manager-backend
     ```
-
+    
 3. Instala las dependencias:
 
     ```bash
-    npm install
+    bun install
     ```
+     Nota: Asegúrate de tener Bun instalado en tu pc.
 
 4. Crea un archivo `.env` en la raíz del proyecto y agrega las siguientes variables:
 
@@ -65,8 +66,9 @@ http://localhost:5000/api-docs/#/
 5. Levanta el servidor:
 
     ```bash
-    npm start
+    bun run dev
     ```
+    Nota: Asegúrate de tener Bun instalado en tu pc.
 
 El servidor estará corriendo en `http://localhost:5000` por defecto.
 
